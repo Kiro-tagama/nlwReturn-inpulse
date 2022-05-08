@@ -9,6 +9,7 @@ routes.post('/feedbacks',async (req,res)=>{
   //desestruturação 
   const {type,comment,screenshot}=req.body
 
+  try{
   const prismaFeedbacksRepository= new PrismaFeedbackRepository()
   const nodemailerMailAdapter= new NodemailerMailAdapter()
 
@@ -20,6 +21,11 @@ routes.post('/feedbacks',async (req,res)=>{
   await submiteFeedbackUseCase.execute({
     type,comment,screenshot
   })
-  
   return res.status(201).send()
+
+  }catch (err){
+    console.log(err);
+    return res.status(500).send()
+  }
+  
 })
